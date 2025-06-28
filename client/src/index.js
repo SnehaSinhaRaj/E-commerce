@@ -8,6 +8,8 @@ import { AuthProvider } from "./context/auth";
 import { SearchProvider } from "./context/search";
 import { CartProvider } from "./context/cart";
 import "antd/dist/reset.css";
+import axios from 'axios';
+
 
 axios.defaults.baseURL = "https://your-backend.onrender.com/api/v1";
 
