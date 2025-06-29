@@ -11,7 +11,7 @@ import "antd/dist/reset.css";
 import axios from 'axios';
 
 
-axios.defaults.baseURL = "https://your-backend.onrender.com/api/v1";
+axios.defaults.baseURL = "https://e-commerce-pi2u.onrender.com/api/v1";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
