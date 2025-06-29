@@ -1,40 +1,51 @@
 import React from "react";
-import { useSearch } from "../../context/search";
-import axios from "axios";
+import { useSearch } from "../context/search";
+import Layout from "./../components/Layout/Layout";
 import { useNavigate } from "react-router-dom";
-const SearchInput = () => {
-  const [values, setValues] = useSearch();
+
+const Search = () => {
+  const [values] = useSearch();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const { data } = await axios.get(
-        `https://e-commerce-pi2u.onrender.com/api/v1/auth/search/${values.keyword}`
-      );
-      setValues({ ...values, results: data });
-      navigate("/search");
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
-    <div>
-      <form className="d-flex" role="search" onSubmit={handleSubmit}>
-        <input
-          className="form-control me-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-          value={values.keyword}
-          onChange={(e) => setValues({ ...values, keyword: e.target.value })}
-        />
-        <button className="btn btn-outline-success" type="submit">
-          Search
-        </button>
-      </form>
-    </div>
+    <Layout title={"Search results"}>
+      <div className="container">
+        <div className="text-center">
+          <h1>Search Results</h1>
+          <h6>
+            {Array.isArray(values.results)
+              ? `Found ${values.results.length} result(s)`
+              : "No results found"}
+          </h6>
+          <div className="d-flex flex-wrap mt-4">
+            {Array.isArray(values.results) &&
+              values.results.map((p) => (
+                <div className="card m-2" key={p._id} style={{ width: "18rem" }}>
+                  <img
+                    src={`/api/v1/product/product-photo/${p._id}`}
+                    className="card-img-top"
+                    alt={p.name}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{p.name}</h5>
+                    <p className="card-text">
+                      {p.description?.substring(0, 30)}...
+                    </p>
+                    <p className="card-text">$ {p.price}</p>
+                    <button
+                      className="btn btn-primary ms-1"
+                      onClick={() => navigate(`/product/${p.slug}`)}
+                    >
+                      More Details
+                    </button>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
+    </Layout>
   );
 };
 
-export default SearchInput;
+export default Search;
